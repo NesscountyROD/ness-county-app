@@ -12,17 +12,37 @@
 <body>
   <h1>Ness County App</h1>
   <p>This is the official Ness County app.</p>
-  <p>Notifications coming soon.</p>
-</body>
-</html>
-</body>
-<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker
-        .register("/service-worker.js")
-        .then(() => console.log("Service Worker registered"))
-        .catch(err => console.error("Service Worker registration failed:", err));
+
+  <button id="notifyBtn">
+    Enable Notifications
+  </button>
+
+  <p id="status"></p>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/service-worker.js");
+      });
+    }
+
+    const btn = document.getElementById("notifyBtn");
+    const status = document.getElementById("status");
+
+    btn.addEventListener("click", async () => {
+      if (!("Notification" in window)) {
+        status.textContent = "Notifications are not supported on this device.";
+        return;
+      }
+
+      const permission = await Notification.requestPermission();
+
+      if (permission === "granted") {
+        status.textContent = "Notifications enabled ✅";
+      } else {
+        status.textContent = "Notifications were not enabled.";
+      }
     });
-  }
-</script>
+  </script>
+</body>
+
