@@ -1,0 +1,22 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main  # Change to your branch if it's different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          account_id: ${{ secrets.CF_ACCOUNT_ID }}
+          project_name: ness-county-app
+          branch: main
+          api_token: ${{ secrets.CF_API_TOKEN }}
